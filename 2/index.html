@@ -116,8 +116,8 @@
                   </ul>
                   </div> -->
                <div class="user-profile d-flex align-items-center">
-                  <img src="https://i.pravatar.cc/40?img=1" alt="Admin Daboy" class="rounded-circle me-2">
-                  <div>
+                  <img src="https://i.pravatar.cc/40?img=1" alt="Admin Daboy" class="rounded-circle me-2 user-profile-image">
+                  <div class="login-user">
                      <div class="fw-bold">Jai</div>
                      <small class="text-muted">Cashier 01</small>
                   </div>
@@ -157,7 +157,7 @@
                         <button class="btn btn-light border flex-shrink-0"><i class="bi bi-cake2-fill me-1"></i> Appetizer</button>
                         <button class="btn btn-light border flex-shrink-0"><i class="bi bi-basket-fill me-1"></i> Side Dish</button>
                      </div>
-                     <div class="row g-3">
+                     <div class="row product-container g-3">
                           <div class="col-md-6 col-lg-4">
                            <div class="card menu-card">
                               <img src="image/product/dates.jpeg" class="card-img-top" alt="Burger">
@@ -443,6 +443,8 @@
          z-index: 1050;
          transition: left 0.3s ease-in-out;
          }
+         
+         
          .sidebar.open { left: 0; }
          .sidebar.open .sidebar-text { opacity: 1; } /* Ensure text is visible on mobile */
          .sidebar .nav-link { justify-content: flex-start; }
@@ -465,6 +467,16 @@
          .sidebar-submenu {
             padding-left: 20px;
          }
+         }
+          @media (max-width: 768px) {
+         .product-container{
+            height: 40vh;
+            overflow-y: auto;
+         }
+         .user-profile-image{
+            display: none;
+         }
+         
          }
          .order-items-list{
             height: 270px;
