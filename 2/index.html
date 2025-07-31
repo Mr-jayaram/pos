@@ -468,16 +468,7 @@
             padding-left: 20px;
          }
          }
-          @media (max-width: 768px) {
-         .product-container{
-            height: 40vh;
-            overflow-y: auto;
-         }
-         .user-profile-image{
-            display: none;
-         }
          
-         }
          .order-items-list{
             height: 270px;
             overflow-y: auto;
@@ -508,6 +499,18 @@
          .payment-summary .summary-row { display: flex; justify-content: space-between; margin-bottom: 0.75rem; color: var(--text-muted); }
          .payment-summary .summary-row.total { font-size: 1.1rem; color: var(--text-color); }
          .order-id{margin-left: 10px;}
+          @media (max-width: 768px) {
+         .product-container{
+            height: 40vh;
+            overflow-y: auto;
+         }
+         .user-profile-image{
+            display: none;
+         }
+         .menu-card .card-img-top { height: 225px;  border-radius: 12px 12px 0 0;}
+
+         
+         }
       </style>
       <!-- Bootstrap JS -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
