@@ -125,7 +125,6 @@
             </header>
             <!-- Main Grid Layout -->
             <div class="row g-4">
-               <!-- Left Column: Menu -->
                <div class="col-lg-8">
                   <!-- <div class="sales-analytic mb-4">
                      <div class="d-flex justify-content-between align-items-center mb-3">
@@ -147,8 +146,8 @@
                         <div class="d-flex gap-2">
                            <button class="btn bg-white border ms-2 "><i class="bi bi-filter-right"></i></button>
                            <div class="search-wrap border">
-                              <input type="text" class="input" placeholder="Search">
-                              <i class="bi bi-search" id="search-icon"></i>
+                              <input type="text" class="input" id="search_input" placeholder="Search">
+                              <i class="bi bi-search" id="search_icon"></i>
                            </div>
                         </div>
                      </div>
@@ -516,7 +515,7 @@
          .search-wrap input::placeholder {
          color: black;
          }
-         #search-icon{
+         #search_icon{
          position: absolute;
          top: 10px;
          left: 10px;
@@ -670,9 +669,16 @@
          
          })
          
-         $("#search-icon").click(function(){
+         $("#search_icon").click(function(){
             $(".search-wrap, .input").toggleClass("active");
             $(".search-wrap input[type='text']").focus();
+         });
+
+         $("#search_input").keyup(function(){
+               var value = $(this).val().toLowerCase();
+               $(".prd-item").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+               });
          });
          
          
