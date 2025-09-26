@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+
+    <!-- Custom CSS -->
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --primary-green: #2ecc71; /* A slightly darker green for primary actions */
+            --light-green: #e9f9f0; /* Light green for active states */
+            --text-dark: #333;
+            --text-muted: #6c757d;
+            --border-color: #e0e0e0;
+            --card-border-radius: 15px;
+            --button-border-radius: 10px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Using Inter, looks similar to the image */
+            background-color: #f8f9fa; /* Light grey background */
+            display: flex; /* For full height layout on desktop */
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll from fixed elements */
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            width: 250px; /* Fixed width for sidebar */
+            min-width: 250px;
+            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: fixed; /* Keep it visible at the top */
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            height: 100vh; /* Full viewport height */
+            overflow-y: auto; /* Scrollable if content overflows */
+        }
+        .sidebar::-webkit-scrollbar{
+            width: 0;
+        }
+
+        /* No order summary in admin, but keep the scrollbar rule for generic use if needed */
+        /* .order-summary .ordered-items::-webkit-scrollbar{
+            width: 0;
+        } */
+        .sidebar .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: var(--button-border-radius);
+            margin-bottom: 5px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* NEW: Styles for submenu parent and items */
+        .sidebar .nav-item.has-submenu {
+            margin-bottom: 5px; /* Consistent spacing */
+        }
+
+        /* Ensure parent link for submenu has consistent padding */
+        .sidebar .nav-item.has-submenu > .nav-link {
+            padding-right: 15px; /* Ensure space for chevron */
+        }
+
+        /* Active state for the parent link of an open submenu */
+        .sidebar .nav-item.has-submenu > .nav-link.active {
+            background-color: var(--primary-green);
+            color: #fff;
+        }
+        .sidebar .nav-item.has-submenu > .nav-link.active i {
+            color: #fff;
+        }
+
+        /* Dropdown icon styling and rotation */
+        .sidebar .nav-item.has-submenu .dropdown-icon {
+            margin-left: auto; /* Push to the right */
+            transition: transform 0.3s ease;
+            color: var(--text-muted); /* Default color */
+        }
+
+        /* Icon color when parent link is active */
+        .sidebar .nav-item.has-submenu > .nav-link.active .dropdown-icon {
+            color: #fff;
+        }
+
+        /* Rotate icon when submenu is expanded */
+        .sidebar .nav-item.has-submenu > .nav-link[aria-expanded="true"] .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Submenu list and item styling */
+        .sidebar .submenu-list {
+            padding-left: 0; /* Remove default ul padding */
+            list-style: none; /* Remove bullet points */
+            margin-top: 5px; /* Space from parent link */
+        }
+
+        .sidebar .submenu-list .nav-item {
+            margin-bottom: 3px; /* Smaller margin for submenu items */
+        }
+
+        .sidebar .submenu-link {
+            display: flex;
+            align-items: center;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: var(--button-border-radius);
+            font-size: 0.95rem; /* Slightly smaller font for subitems */
+            transition: background-color 0.2s ease, color 0.2s ease;
+            padding: 10px 15px; /* Added padding for submenu links */
+        }
+
+        .sidebar .submenu-link i {
+            margin-right: 10px; /* Space between icon and text */
+            font-size: 1rem; /* Smaller icon size */
+            color: var(--text-muted);
+        }
+
+        /* Active state for specific submenu items */
+        .sidebar .submenu-link.active {
+            background-color: var(--light-green); /* Lighter green for active submenu item */
+            color: var(--primary-green);
+            font-weight: 500;
+        }
+
+        .sidebar .submenu-link.active i {
+            color: var(--primary-green);
+        }
+
+        /* Hover state for submenu items */
+        .sidebar .submenu-link:hover:not(.active) {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+        }
+        .sidebar .submenu-link:hover:not(.active) i {
+            color: var(--primary-green);
+        }
+        /* END NEW: Styles for submenu */
+
+
+        .sidebar .nav-link i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* This rule will style direct links and the parent of an open submenu */
+        .sidebar .nav-link.active {
+            background-color: var(--primary-green);
+            color: #fff;
+        }
+        .sidebar .nav-link.active i {
+            color: #fff;
+        }
+
+        .sidebar .nav-link:hover:not(.active) {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+        }
+        .sidebar .nav-link:hover:not(.active) i {
+            color: var(--primary-green);
+        }
+
+        .sidebar .user-info {
+            margin-top: auto; /* Pushes user info and logout to bottom */
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sidebar .user-item, .main-content .header-right .user-item { /* Apply to main-content user-item as well */
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .sidebar .user-item .avatar, .main-content .header-right .user-profile .avatar { /* Apply to main-content avatar */
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            flex-shrink: 0; /* Prevent avatar from shrinking */
+        }
+        .main-content .header-right .user-profile .avatar {
+            margin-bottom: 0; /* Override sidebar margin for header */
+            margin-right: 0; /* gap-2 handles spacing */
+            width: 40px; /* Slightly larger avatar in header */
+            height: 40px;
+            font-size: 1rem;
+        }
+
+
+        .sidebar .logout-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+            padding: 10px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px 30px;
+            margin-left: 250px; /* Offset by sidebar width on desktop */
+            overflow-y: auto; /* Make main content scrollable */
+            height: 100vh; /* Ensure it takes full height */
+            padding-bottom: 20px; /* Adjusted as bottom tabs are removed */
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background-color:white ;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Search Bar in Main Header */
+        .main-header .search-bar {
+            flex-grow: 1; /* Allow search bar to take available space */
+            max-width: 500px; /* Limit width */
+        }
+        .main-header .search-bar .form-control {
+            border-radius: var(--button-border-radius);
+            border-color: var(--border-color);
+            padding: 10px 15px;
+        }
+        .main-header .search-bar .input-group-text {
+            background-color: #fff;
+            border-color: var(--border-color);
+            border-radius: var(--button-border-radius) 0 0 var(--button-border-radius);
+        }
+
+        /* Admin dashboard specific styles */
+        .kpi-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-border-radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease-in-out;
+            height: 100%; /* Ensure cards fill height in row */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .kpi-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+        .kpi-card .icon {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 15px;
+        }
+        .kpi-card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        .kpi-card .label {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .dashboard-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--card-border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            height: 100%; /* Ensure cards fill height in row */
+            display: flex;
+            flex-direction: column;
+        }
+        .dashboard-card .card-header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dashboard-card .card-header h5 {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .dashboard-card .card-body {
+            flex-grow: 1;
+            padding: 0; /* Remove default body padding if table/chart fills it */
+            position: relative; /* For Chart.js canvas */
+        }
+
+        /* Table styling for recent orders */
+        .table-responsive {
+            margin-bottom: 0;
+            border-radius: var(--button-border-radius); /* Apply radius to table container */
+            overflow: hidden; /* Ensures table corners are rounded */
+        }
+        .dashboard-table {
+            width: 100%;
+            margin-bottom: 0;
+            border-collapse: separate; /* Required for border-radius on table */
+            border-spacing: 0;
+        }
+        .dashboard-table thead th {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            font-weight: 600;
+            border-bottom: none;
+            padding: 15px;
+        }
+        .dashboard-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .dashboard-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        .dashboard-table tbody td {
+            padding: 15px;
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+        .dashboard-table .status-badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .status-badge.pending {
+            background-color: #fff3cd;
+            color: #ffc107;
+        }
+        .status-badge.completed {
+            background-color: #d4edda;
+            color: #28a745;
+        }
+        .status-badge.cancelled {
+            background-color: #f8d7da;
+            color: #dc3545;
+        }
+
+        /* Chart Canvas Styling - Chart.js handles most, but ensures it fills its container */
+        .dashboard-card .card-body canvas {
+            max-height: 350px; /* Optional: Limit chart height */
+            width: 100% !important; /* Override Chart.js inline style sometimes */
+            height: 100% !important; /* Override Chart.js inline style sometimes */
+        }
+
+
+        /* Bootstrap Offcanvas custom styling */
+        .offcanvas.offcanvas-start {
+            width: 280px; /* Wider offcanvas for sidebar content */
+        }
+        .offcanvas-header {
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 20px;
+        }
+        .offcanvas-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+        .offcanvas-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Duplicate sidebar nav styles for offcanvas */
+        .offcanvas-body .nav-link,
+        .offcanvas-body .submenu-link {
+            padding: 12px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: var(--button-border-radius);
+            margin-bottom: 5px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        .offcanvas-body .nav-link i,
+        .offcanvas-body .submenu-link i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        .offcanvas-body .nav-link.active,
+        .offcanvas-body .submenu-link.active {
+            background-color: var(--primary-green);
+            color: #fff;
+        }
+        .offcanvas-body .nav-link.active i,
+        .offcanvas-body .submenu-link.active i {
+            color: #fff;
+        }
+        .offcanvas-body .nav-link:hover:not(.active),
+        .offcanvas-body .submenu-link:hover:not(.active) {
+            background-color: var(--light-green);
+            color: var(--primary-green);
+        }
+        .offcanvas-body .nav-link:hover:not(.active) i,
+        .offcanvas-body .submenu-link:hover:not(.active) i {
+            color: var(--primary-green);
+        }
+        .offcanvas-body .submenu-list {
+            padding-left: 0;
+            list-style: none;
+            margin-top: 5px;
+        }
+        .offcanvas-body .submenu-link {
+            font-size: 0.95rem;
+            padding: 10px 15px; /* Adjust padding for submenu in offcanvas */
+        }
+        .offcanvas-body .submenu-link i {
+            font-size: 1rem;
+        }
+        .offcanvas-body .user-info {
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        .offcanvas-body .user-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .offcanvas-body .user-item .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: var(--light-green);
+            color: var(--primary-green);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .offcanvas-body .logout-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: block;
+            margin-top: 10px;
+            padding: 10px 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+        .offcanvas-body .dropdown-icon {
+            margin-left: auto; /* Push to the right */
+            transition: transform 0.3s ease;
+            color: var(--text-muted); /* Default color */
+        }
+        .offcanvas-body .nav-item.has-submenu > .nav-link.active .dropdown-icon {
+            color: #fff;
+        }
+        .offcanvas-body .nav-item.has-submenu > .nav-link[aria-expanded="true"] .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+
+        /* Mobile responsiveness adjustments */
+        @media (max-width: 767.98px) {
+            .sidebar {
+                display: none; /* Hide sidebar on small screens */
+            }
+            .main-content {
+                margin-left: 0; /* No offset when sidebar is hidden */
+                padding: 15px; /* Smaller padding on mobile */
+                height: auto; /* Allow content to dictate height */
+                padding-bottom: 20px; /* No fixed bottom tabs, minimal padding */
+            }
+            .main-header {
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+                gap: 10px; /* Tighter spacing */
+            }
+            .main-header .search-bar { /* Make search bar full width on mobile */
+                order: 1; /* Place it first */
+                width: 100%;
+                flex-basis: 100%;
+            }
+            /* Adjust header-right on mobile */
+            .main-header .header-right {
+                order: 2; /* Place after search bar */
+                margin-left: auto; /* Push to right if space available */
+                margin-top: 5px; /* Little space below search */
+                width: auto; /* Allow content to dictate width */
+            }
+            /* Mobile burger menu for offcanvas sidebar */
+            .main-header .mobile-menu-btn {
+                order: 3; /* Place last */
+                margin-right: auto; /* Push to left */
+            }
+
+            .kpi-card .value {
+                font-size: 1.5rem;
+            }
+            .kpi-card .label {
+                font-size: 0.85rem;
+            }
+            .dashboard-card .card-body canvas {
+                max-height: 250px; /* Adjust height for smaller screens */
+            }
+        }
+
+        /* Medium screens adjustment */
+        @media (min-width: 768px) and (max-width: 991.98px) {
+            .sidebar {
+                width: 200px; /* Slightly smaller sidebar */
+                min-width: 200px;
+            }
+            .main-content {
+                margin-left: 200px; /* Adjust offset */
+                padding: 20px;
+            }
+            /* The mobile menu button will be hidden by d-md-none, so this is for general display */
+            .main-header .mobile-menu-btn {
+                display: none !important; /* Explicitly hide on tablets/desktop */
+            }
+            .main-header .search-bar { /* Ensure search bar is visible on tablets */
+                display: block !important;
+                flex-grow: 1;
+                max-width: none; /* Allow it to grow more */
+            }
+            .main-header .header-right {
+                margin-left: auto; /* Push to right */
+                margin-top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar d-none d-md-flex">
+        <div class="logo">
+            ADMIN PANEL
+        </div>
+
+        <nav class="flex-column mb-auto">
+            <a href="#" class="nav-link active">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-clipboard-list"></i> Orders
+            </a>
+            
+            <!-- Products with Submenu -->
+            <div class="nav-item has-submenu">
+                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#productsSubmenu" role="button" aria-expanded="false" aria-controls="productsSubmenu">
+                    <span><i class="fas fa-boxes me-3"></i> Products</span>
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </a>
+                <div class="collapse" id="productsSubmenu">
+                    <ul class="nav flex-column submenu-list">
+                        <li class="nav-item">
+                            <a class="nav-link submenu-link" href="#">
+                                <i class="fas fa-th-large"></i> All Products
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link submenu-link" href="#">
+                                <i class="fas fa-plus-circle"></i> Add Product
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link submenu-link" href="#">
+                                <i class="fas fa-tags"></i> Categories
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- End Products with Submenu -->
+
+            <a href="#" class="nav-link">
+                <i class="fas fa-chart-line"></i> Reports
+            </a>
+            <a href="#" class="nav-link">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <div class="container-fluid px-0">
+            <!-- Header for Main Content -->
+            <div class="main-header">
+                <!-- Admin Search Bar -->
+                <div class="search-bar me-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search users, orders, products...">
+                    </div>
+                </div>
+                
+                <!-- Header Right (User & Notification) -->
+                <div class="header-right d-flex align-items-center gap-3">
+                    <!-- Notification Icon -->
+                    <div class="position-relative">
+                        <button class="btn btn-light rounded-circle p-0" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border-color);">
+                            <i class="fas fa-bell fs-5 text-muted"></i>
+                        </button>
+                        <!-- Notification badge -->
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size: 0.6em; padding: 0.4em 0.6em;">3</span>
+                    </div>
+
+                    <!-- User Profile (Avatar and Name) -->
+                    <div class="user-profile d-flex align-items-center gap-2">
+                        <div class="avatar">AD</div>
+                        <span class="d-none d-md-inline text-dark">Admin User</span>
+                    </div>
+
+                    <!-- Burger menu for offcanvas sidebar on mobile -->
+                    <button class="btn btn-light rounded-pill mobile-menu-btn d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+
+            <h3 class="mb-4 text-dark">Dashboard Overview</h3>
+
+            <div class="row g-4 mb-4">
+              
+                <!-- KPI Card 1: Total Sales -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="kpi-card">
+                        <div class="icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="value">$125,450</div>
+                        <div class="label">Total Sales</div>
+                    </div>
+                </div>
+
+                <!-- KPI Card 2: Total Orders -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="kpi-card">
+                        <div class="icon"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="value">3,120</div>
+                        <div class="label">Total Orders</div>
+                    </div>
+                </div>
+
+                <!-- KPI Card 3: New Customers -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="kpi-card">
+                        <div class="icon"><i class="fas fa-user-plus"></i></div>
+                        <div class="value">185</div>
+                        <div class="label">New Customers</div>
+                    </div>
+                </div>
+
+                <!-- KPI Card 4: Products in Stock -->
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="kpi-card">
+                        <div class="icon"><i class="fas fa-cubes"></i></div>
+                        <div class="value">980</div>
+                        <div class="label">Products in Stock</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row g-4 mb-4">
+                <!-- Sales Overview Chart (Line Chart) -->
+                <div class="col-12 col-lg-6">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h5>Monthly Sales Overview</h5>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">Details</a>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue by Product Category (Donut Chart) -->
+                <div class="col-12 col-lg-6">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h5>Revenue by Product Category</h5>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">Details</a>
+                        </div>
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <canvas id="categoryRevenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <!-- Recent Orders -->
+                <div class="col-12 col-lg-7">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h5>Recent Orders</h5>
+                            <a href="#" class="btn btn-sm btn-outline-success">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table dashboard-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#00123</td>
+                                            <td>John Doe</td>
+                                            <td>$45.50</td>
+                                            <td><span class="status-badge completed">Completed</span></td>
+                                            <td>2023-10-26</td>
+                                        </tr>
+                                        <tr>
+                                            <td>#00124</td>
+                                            <td>Jane Smith</td>
+                                            <td>$78.20</td>
+                                            <td><span class="status-badge pending">Pending</span></td>
+                                            <td>2023-10-26</td>
+                                        </tr>
+                                        <tr>
+                                            <td>#00125</td>
+                                            <td>Robert Johnson</td>
+                                            <td>$12.99</td>
+                                            <td><span class="status-badge completed">Completed</span></td>
+                                            <td>2023-10-25</td>
+                                        </tr>
+                                        <tr>
+                                            <td>#00126</td>
+                                            <td>Emily Davis</td>
+                                            <td>$120.00</td>
+                                            <td><span class="status-badge cancelled">Cancelled</span></td>
+                                            <td>2023-10-25</td>
+                                        </tr>
+                                        <tr>
+                                            <td>#00127</td>
+                                            <td>Michael Brown</td>
+                                            <td>$33.75</td>
+                                            <td><span class="status-badge pending">Pending</span></td>
+                                            <td>2023-10-24</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New User Registrations (Bar Chart) -->
+                <div class="col-12 col-lg-5">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h5>New User Registrations</h5>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">Details</a>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="userRegistrationsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap Offcanvas (for mobile sidebar) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasSidebarLabel">ADMIN PANEL</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Content of your sidebar goes here -->
+            <nav class="flex-column mb-auto">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-users"></i> Users
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-clipboard-list"></i> Orders
+                </a>
+                
+                <!-- Products with Submenu (Offcanvas) -->
+                <div class="nav-item has-submenu">
+                    <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#productsSubmenuOffcanvas" role="button" aria-expanded="false" aria-controls="productsSubmenuOffcanvas">
+                        <span><i class="fas fa-boxes me-3"></i> Products</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </a>
+                    <div class="collapse" id="productsSubmenuOffcanvas">
+                        <ul class="nav flex-column submenu-list">
+                            <li class="nav-item">
+                                <a class="nav-link submenu-link" href="#">
+                                    <i class="fas fa-th-large"></i> All Products
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link submenu-link" href="#">
+                                    <i class="fas fa-plus-circle"></i> Add Product
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link submenu-link" href="#">
+                                    <i class="fas fa-tags"></i> Categories
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- End Products with Submenu (Offcanvas) -->
+
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i> Reports
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </nav>
+            <div class="user-info">
+                <div class="user-item">
+                    <div class="avatar">SA</div>
+                    <span>Super Admin</span>
+                </div>
+                <div class="user-item">
+                    <div class="avatar">MA</div>
+                    <span>Manager A</span>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt me-2"></i> Logout
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <!-- Chart.js initialization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chart.js global settings
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = 'var(--text-muted)'; // Default text color for charts
+            Chart.defaults.borderColor = 'var(--border-color)'; // Default border color for axes
+
+            // --- 1. Monthly Sales Overview (Line Chart) ---
+            const salesCtx = document.getElementById('salesChart');
+            if (salesCtx) {
+                new Chart(salesCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                        datasets: [{
+                            label: 'Total Sales ($)',
+                            data: [30000, 32000, 35000, 33000, 38000, 42000, 40000, 45000, 48000, 50000],
+                            borderColor: 'var(--primary-green)',
+                            backgroundColor: 'rgba(46, 204, 113, 0.2)', // Light green fill
+                            fill: true,
+                            tension: 0.3, // Smoother line
+                            pointBackgroundColor: 'var(--primary-green)',
+                            pointBorderColor: '#fff',
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': $' + context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false // Hide x-axis grid lines
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Sales Amount ($)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- 2. Revenue by Product Category (Donut Chart) ---
+            const categoryCtx = document.getElementById('categoryRevenueChart');
+            if (categoryCtx) {
+                new Chart(categoryCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Fruits & Veg', 'Dairy & Eggs', 'Bakery', 'Beverages', 'Snacks', 'Meat & Seafood'],
+                        datasets: [{
+                            data: [25, 15, 10, 20, 18, 12], // Percentages or proportional values
+                            backgroundColor: [
+                                '#2ecc71', // Primary Green
+                                '#3498db', // Blue
+                                '#f1c40f', // Yellow
+                                '#e74c3c', // Red
+                                '#9b59b6', // Purple
+                                '#1abc9c', // Turquoise
+                            ],
+                            borderColor: '#fff',
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                                align: 'center',
+                                labels: {
+                                    boxWidth: 20,
+                                    padding: 15,
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed !== null) {
+                                            label += context.raw + '%'; // Assuming data is percentage
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // --- 3. New User Registrations (Bar Chart) ---
+            const usersCtx = document.getElementById('userRegistrationsChart');
+            if (usersCtx) {
+                new Chart(usersCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
+                        datasets: [{
+                            label: 'New Users',
+                            data: [20, 25, 30, 22, 35, 40, 38, 45, 50, 55],
+                            backgroundColor: 'var(--primary-green)',
+                            borderColor: 'var(--primary-green)',
+                            borderWidth: 1,
+                            borderRadius: 5, // Rounded bars
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false // No need for legend with single dataset
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.dataset.label + ': ' + context.raw.toLocaleString() + ' users';
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Users'
+                                },
+                                ticks: {
+                                    precision: 0 // Ensure whole numbers for user count
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,697 @@
+/* CSS Variables for consistent theming */
+:root {
+    --primary-green: #2ecc71; /* A slightly darker green for primary actions */
+    --light-green: #e9f9f0; /* Light green for active states */
+    --text-dark: #333;
+    --text-muted: #6c757d;
+    --border-color: #e0e0e0;
+    --card-border-radius: 15px;
+    --button-border-radius: 10px;
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Using Inter, looks similar to the image */
+    background-color: #f8f9fa; /* Light grey background */
+    display: flex; /* For full height layout on desktop */
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll from fixed elements */
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px; /* Fixed width for sidebar */
+    min-width: 250px;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed; /* Keep it visible at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100vh; /* Full viewport height */
+    overflow-y: auto; /* Scrollable if content overflows */
+}
+.sidebar::-webkit-scrollbar{
+    width: 0;
+}
+
+.order-summary .ordered-items::-webkit-scrollbar,
+.offcanvas-body::-webkit-scrollbar { /* Added for offcanvas */
+    width: 0;
+}
+
+.sidebar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-green);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+
+/* Generic Nav Styling (applied to both sidebar and offcanvas nav) */
+.sidebar nav.flex-column .nav-link,
+.offcanvas-body nav.flex-column .nav-link { /* Updated selector */
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: var(--button-border-radius);
+    margin-bottom: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar nav.flex-column .nav-link i,
+.offcanvas-body nav.flex-column .nav-link i { /* Updated selector */
+    margin-right: 15px;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+.sidebar nav.flex-column .nav-link.active,
+.offcanvas-body nav.flex-column .nav-link.active { /* Updated selector */
+    background-color: var(--primary-green);
+    color: #fff;
+}
+.sidebar nav.flex-column .nav-link.active i,
+.offcanvas-body nav.flex-column .nav-link.active i { /* Updated selector */
+    color: #fff;
+}
+
+.sidebar nav.flex-column .nav-link:hover:not(.active),
+.offcanvas-body nav.flex-column .nav-link:hover:not(.active) { /* Updated selector */
+    background-color: var(--light-green);
+    color: var(--primary-green);
+}
+.sidebar nav.flex-column .nav-link:hover:not(.active) i,
+.offcanvas-body nav.flex-column .nav-link:hover:not(.active) i { /* Updated selector */
+    color: var(--primary-green);
+}
+
+/* Styles for submenu parent and items (also applied to offcanvas) */
+.sidebar .nav-item.has-submenu,
+.offcanvas-body .nav-item.has-submenu { /* Updated selector */
+    margin-bottom: 5px;
+}
+
+.sidebar .nav-item.has-submenu > .nav-link,
+.offcanvas-body .nav-item.has-submenu > .nav-link { /* Updated selector */
+    padding-right: 15px;
+}
+
+.sidebar .nav-item.has-submenu > .nav-link.active,
+.offcanvas-body .nav-item.has-submenu > .nav-link.active { /* Updated selector */
+    background-color: var(--primary-green);
+    color: #fff;
+}
+.sidebar .nav-item.has-submenu > .nav-link.active i,
+.offcanvas-body .nav-item.has-submenu > .nav-link.active i { /* Updated selector */
+    color: #fff;
+}
+
+.sidebar .nav-item.has-submenu .dropdown-icon,
+.offcanvas-body .nav-item.has-submenu .dropdown-icon { /* Updated selector */
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    color: var(--text-muted);
+}
+
+.sidebar .nav-item.has-submenu > .nav-link.active .dropdown-icon,
+.offcanvas-body .nav-item.has-submenu > .nav-link.active .dropdown-icon { /* Updated selector */
+    color: #fff;
+}
+
+.sidebar .nav-item.has-submenu > .nav-link[aria-expanded="true"] .dropdown-icon,
+.offcanvas-body .nav-item.has-submenu > .nav-link[aria-expanded="true"] .dropdown-icon { /* Updated selector */
+    transform: rotate(180deg);
+}
+
+.sidebar .submenu-list,
+.offcanvas-body .submenu-list { /* Updated selector */
+    padding-left: 0;
+    list-style: none;
+    margin-top: 5px;
+}
+
+.sidebar .submenu-list .nav-item,
+.offcanvas-body .submenu-list .nav-item { /* Updated selector */
+    margin-bottom: 3px;
+}
+
+.sidebar .submenu-link,
+.offcanvas-body .submenu-link { /* Updated selector, adjusted padding for indentation */
+    display: flex;
+    align-items: center;
+    color: var(--text-dark);
+    text-decoration: none;
+    border-radius: var(--button-border-radius);
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    padding: 8px 15px 8px 35px; /* Added left padding for indentation */
+}
+
+.sidebar .submenu-link i,
+.offcanvas-body .submenu-link i { /* Updated selector */
+    margin-right: 10px;
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+.sidebar .submenu-link.active,
+.offcanvas-body .submenu-link.active { /* Updated selector */
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    font-weight: 500;
+}
+.sidebar .submenu-link.active i,
+.offcanvas-body .submenu-link.active i { /* Updated selector */
+    color: var(--primary-green);
+}
+
+.sidebar .submenu-link:hover:not(.active),
+.offcanvas-body .submenu-link:hover:not(.active) { /* Updated selector */
+    background-color: var(--light-green);
+    color: var(--primary-green);
+}
+.sidebar .submenu-link:hover:not(.active) i,
+.offcanvas-body .submenu-link:hover:not(.active) i { /* Updated selector */
+    color: var(--primary-green);
+}
+
+/* User Info and Logout in Desktop Sidebar (at the bottom) */
+.sidebar .user-info {
+    margin-top: auto; /* Pushes user info and logout to bottom */
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.sidebar .user-item { /* Specific for desktop sidebar's user-info */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+}
+
+.sidebar .user-item .avatar { /* Specific for desktop sidebar's user-info */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.sidebar .logout-btn {
+    color: var(--text-muted);
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+    padding: 10px 0;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px 30px;
+    margin-left: 250px; /* Offset by sidebar width on desktop */
+    overflow-y: auto; /* Make main content scrollable */
+    height: 100vh; /* Ensure it takes full height */
+    padding-bottom: 20px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    background-color:white ;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Search Bar in Main Header */
+.main-header .search-bar .form-control {
+    border-radius: var(--button-border-radius);
+    border-color: var(--border-color);
+    padding: 10px 15px;
+}
+.main-header .search-bar .input-group-text {
+    background-color: #fff;
+    border-color: var(--border-color);
+    border-radius: var(--button-border-radius) 0 0 var(--button-border-radius);
+}
+
+.categories-nav {
+    margin-bottom: 30px;
+    overflow-x: auto;
+    white-space: nowrap; /* Prevent wrapping of buttons */
+    -webkit-overflow-scrolling: touch; /* For smoother scrolling on iOS */
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+}
+.categories-nav::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
+}
+
+
+.categories-nav .category-item {
+    display: inline-block; /* Allows horizontal display and spacing */
+    margin-right: 10px;
+}
+
+.categories-nav .category-btn {
+    background-color: #fff;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 10px 20px;
+    border-radius: var(--button-border-radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9rem;
+    min-width: 100px; /* Ensure a minimum width */
+    justify-content: center;
+    height: 70px; /* Fixed height for consistent look */
+}
+
+.categories-nav .category-btn.active {
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.categories-nav .category-btn i {
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+.categories-nav .category-btn small {
+    font-size: 0.75rem;
+}
+
+/* Product Card */
+.product-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out;
+    position: relative;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.product-card .card-img-top {
+    height: 200px;
+    object-fit: contain; /* Changed from cover to contain to fit images better */
+}
+
+.product-card .card-body {
+    padding: 15px;
+}
+
+.product-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+
+.product-card .card-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-card .price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-green);
+}
+
+.product-card .add-to-cart-btn {
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    border: 1px solid var(--primary-green);
+    border-radius: var(--button-border-radius);
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    width: auto;
+    min-width: 100px;
+    white-space: nowrap;
+}
+
+.product-card .quantity-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-green);
+    color: #fff;
+    border-radius: var(--button-border-radius);
+    padding: 5px 10px;
+    width: 120px; /* Fixed width for selector */
+}
+
+.product-card .quantity-selector button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    width: 30px;
+    height: 30px;
+    line-height: 1;
+    padding: 0;
+    cursor: pointer;
+}
+
+.product-card .quantity-selector span {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.discount-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffc107; /* Yellow for discount */
+    color: var(--text-dark);
+    padding: 5px 10px;
+    border-radius: var(--card-border-radius) 0 var(--card-border-radius) 0;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* Order Summary (Cart) */
+.order-summary {
+    background-color: #fff;
+    border-radius: var(--card-border-radius);
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    height: fit-content; /* Adjust height based on content */
+    position: sticky; /* Sticky on scroll */
+    top: 20px; /* Offset from top */
+}
+
+.order-summary .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.order-summary .header h5 {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.order-summary .ordered-items {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.order-summary .order-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.order-summary .order-item:last-child {
+    border-bottom: none;
+}
+
+.order-summary .order-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.order-summary .item-details {
+    flex-grow: 1;
+}
+
+.order-summary .item-details .name {
+    font-weight: 600;
+    margin-bottom: 3px;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+}
+
+.order-summary .item-details .quantity-price {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.order-summary .item-total-price {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: var(--primary-green);
+    flex-shrink: 0;
+}
+
+.order-summary .bill-details {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+.order-summary .bill-details .d-flex {
+    margin-bottom: 10px;
+}
+
+.order-summary .bill-details .total-amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-dark);
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.payment-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.payment-options .payment-btn {
+    background-color: #f0f0f0;
+    border: 1px solid var(--border-color);
+    border-radius: var(--button-border-radius);
+    padding: 15px 10px;
+    text-align: center;
+    width: calc(33.33% - 7px);
+    color: var(--text-dark);
+    font-size: 0.85rem;
+}
+.payment-options .payment-btn.active {
+    background-color: var(--light-green);
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}
+
+.payment-options .payment-btn i {
+    display: block;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.complete-sale-btn {
+    background-color: var(--primary-green);
+    color: #fff;
+    padding: 15px;
+    border-radius: var(--button-border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    width: 100%;
+}
+
+/* Offcanvas Sidebar Styling (for mobile) */
+.offcanvas {
+    width: 250px; /* Match sidebar width */
+    background-color: #fff; /* Match sidebar background */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); /* Match sidebar shadow */
+}
+
+.offcanvas-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.offcanvas-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-green);
+}
+
+.offcanvas-body {
+    padding: 20px;
+    display: flex; /* To allow user-info to push to bottom */
+    flex-direction: column;
+    height: calc(100% - 70px); /* Adjust based on header height, roughly */
+    overflow-y: auto;
+}
+
+.offcanvas-body .user-info {
+    margin-top: auto; /* Push to bottom */
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.offcanvas-body .user-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.offcanvas-body .user-item .avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background-color: var(--light-green);
+    color: var(--primary-green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.offcanvas-body .logout-btn {
+    color: var(--text-muted);
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+    padding: 10px 0;
+    text-align: left; /* Align with other nav items */
+    border-top: 1px solid var(--border-color); /* Separator */
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+.offcanvas-body .logout-btn:hover {
+    color: var(--primary-green);
+}
+.offcanvas-body .logout-btn i {
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+}
+.offcanvas-body .logout-btn:hover i {
+    color: var(--primary-green);
+}
+
+
+/* Mobile responsiveness adjustments */
+@media (max-width: 767.98px) {
+    .sidebar {
+        display: none; /* Hide sidebar on small screens */
+    }
+    .main-content {
+        margin-left: 0; /* No offset when sidebar is hidden */
+        padding: 15px; /* Smaller padding on mobile */
+        height: auto; /* Allow content to dictate height */
+        padding-bottom: 20px;
+    }
+    .main-header {
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+    .main-header .search-bar {
+        order: 1;
+        width: 100%;
+        flex-basis: 100%;
+    }
+    .main-header .header-right {
+        order: 2;
+        margin-left: auto;
+        margin-top: 5px;
+    }
+    .main-header .mobile-menu-btn {
+        order: 3;
+        margin-right: auto;
+    }
+
+    .categories-nav .category-btn {
+        min-width: unset;
+        padding: 8px 15px;
+        font-size: 0.85rem;
+        height: 60px;
+    }
+    .categories-nav .category-btn i {
+        margin-bottom: 3px;
+    }
+
+    .order-summary {
+        margin-top: 30px;
+        position: static;
+        height: auto;
+    }
+    .order-summary .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .order-summary .header h5 {
+        margin-bottom: 10px;
+    }
+    .order-summary .payment-options {
+        justify-content: center;
+        gap: 8px;
+    }
+    .order-summary .payment-options .payment-btn {
+        width: calc(50% - 4px);
+        padding: 12px 8px;
+    }
+}
+
+/* Medium screens adjustment */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .sidebar {
+        width: 200px;
+        min-width: 200px;
+    }
+    .main-content {
+        margin-left: 200px;
+        padding: 20px;
+    }
+    .main-header .search-bar {
+        display: block !important;
+    }
+}
+
