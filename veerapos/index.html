@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS Dreams | PixelStudio</title>
+    <title>POS</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,25 +28,50 @@
 
             <!-- Standard Menu -->
             <div class="nav-items menu-layout">
-                <button class="menu-item active" title="Dashboard">
-                    <div class="icon">�</div>
+                <button class="menu-item" title="Dashboard">
+                    <div class="icon">📊</div>
                     <span class="tooltip">Dashboard</span>
+                    <div class="submenu">
+                        <a href="#" class="submenu-item">Overview</a>
+                        <a href="#" class="submenu-item">Analytics</a>
+                        <a href="#" class="submenu-item">Reports</a>
+                    </div>
                 </button>
                 <button class="menu-item" title="Sales">
                     <div class="icon">🛍️</div>
                     <span class="tooltip">Sales</span>
+                    <div class="submenu">
+                        <a href="#" class="submenu-item">New Sale</a>
+                        <a href="#" class="submenu-item">Sale History</a>
+                        <a href="#" class="submenu-item">Returns</a>
+                    </div>
                 </button>
                 <button class="menu-item" title="Customers">
-                    <div class="icon">�</div>
+                    <div class="icon">👥</div>
                     <span class="tooltip">People</span>
+                    <div class="submenu">
+                        <a href="#" class="submenu-item">Customer List</a>
+                        <a href="#" class="submenu-item">Add Customer</a>
+                        <a href="#" class="submenu-item">Customer Groups</a>
+                    </div>
                 </button>
                 <button class="menu-item" title="Reports">
-                    <div class="icon">�</div>
+                    <div class="icon">📈</div>
                     <span class="tooltip">Stats</span>
+                    <div class="submenu">
+                        <a href="#" class="submenu-item">Sales Report</a>
+                        <a href="#" class="submenu-item">Inventory Report</a>
+                        <a href="#" class="submenu-item">Profit & Loss</a>
+                    </div>
                 </button>
                 <button class="menu-item" title="Settings">
                     <div class="icon">⚙️</div>
                     <span class="tooltip">Settings</span>
+                    <div class="submenu">
+                        <a href="#" class="submenu-item">General</a>
+                        <a href="#" class="submenu-item">Users</a>
+                        <a href="#" class="submenu-item">System</a>
+                    </div>
                 </button>
             </div>
         </nav>
@@ -55,7 +80,7 @@
         <main class="center-panel">
             <header class="top-bar">
                 <div class="welcome-section">
-                    <h1>Welcome, PixelAdmin</h1>
+                    <h1>Welcome</h1>
                     <p id="current-date">Fetching date...</p>
                 </div>
 
@@ -67,6 +92,14 @@
                         </svg>
                         <input type="text" id="search-input" placeholder="Search Service...">
                     </div>
+                    <button id="mobile-menu-btn" class="mobile-menu-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
                 </div>
             </header>
 
