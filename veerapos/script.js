@@ -247,18 +247,43 @@ function updateTotals() {
 
     const totalCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
-    // Discount input is percent in this logic (or fixed amount based on prior conversation, sticking to code logic which treats input as %)
-    // Wait, the previous code treated discountInput as percent: `const discountAmt = subtotal * (discountVal / 100);`
-    // I will keep existing discount logic but remove tax.
+    // GST Logic
+    const tax = gstEnabled ? subtotal * 0.18 : 0;
 
+    // Discount
     const discountVal = parseFloat(discountInput.value) || 0;
     const discountAmt = subtotal * (discountVal / 100);
 
-    const total = subtotal - discountAmt;
+    const total = subtotal + tax - discountAmt;
 
+    // DOM Updates
     subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
-    // taxEl.textContent = ... (Removed)
     totalEl.textContent = `₹${total.toFixed(2)}`;
+
+    // Handle Tax Row Visiblity
+    let taxRow = document.getElementById('tax-row');
+    if (gstEnabled) {
+        if (!taxRow) {
+            // Create Tax Row if missing
+            const paymentSummary = document.querySelector('.payment-summary');
+            const totalRow = document.querySelector('.payment-summary .total'); // Last row usually
+
+            taxRow = document.createElement('div');
+            taxRow.id = 'tax-row';
+            taxRow.className = 'row';
+            taxRow.innerHTML = `<span>Tax (18%)</span><span id="tax-display">₹0.00</span>`;
+
+            if (paymentSummary && totalRow) {
+                paymentSummary.insertBefore(taxRow, totalRow);
+            }
+        }
+        // Update value
+        const taxDisplay = document.getElementById('tax-display');
+        if (taxDisplay) taxDisplay.textContent = `₹${tax.toFixed(2)}`;
+    } else {
+        // Remove if exists
+        if (taxRow) taxRow.remove();
+    }
 
     // Update Total Count Display
     const countEl = document.getElementById('total-count-display');
@@ -382,6 +407,38 @@ if (sheetHandle && rightPanel) {
 
     sheetHandle.addEventListener('mousedown', onPointerDown);
     sheetHandle.addEventListener('touchstart', onPointerDown, { passive: false });
+}
+
+/* Settings & GST Logic */
+let gstEnabled = false; // Default OFF
+const settingsModal = document.getElementById('settings-modal');
+const gstToggle = document.getElementById('gst-toggle');
+const closeSettingsBtn = document.getElementById('close-settings-modal');
+const saveSettingsBtn = document.getElementById('save-settings-btn');
+const settingsMenuBtn = document.querySelector('.menu-item[title="Settings"]');
+
+// Open Settings
+if (settingsMenuBtn) {
+    settingsMenuBtn.addEventListener('click', () => {
+        gstToggle.checked = gstEnabled; // Sync UI
+        settingsModal.classList.remove('hidden');
+    });
+}
+
+// Close Settings
+if (closeSettingsBtn) {
+    closeSettingsBtn.addEventListener('click', () => {
+        settingsModal.classList.add('hidden');
+    });
+}
+
+// Save Settings
+if (saveSettingsBtn) {
+    saveSettingsBtn.addEventListener('click', () => {
+        gstEnabled = gstToggle.checked;
+        updateTotals(); // Recalculate
+        settingsModal.classList.add('hidden');
+    });
 }
 
 init();
