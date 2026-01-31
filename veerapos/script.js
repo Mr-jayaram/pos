@@ -245,17 +245,22 @@ function updateTotals() {
         return acc + (price * item.qty);
     }, 0);
 
-    const tax = subtotal * (taxRate / 100);
+    const totalCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
-    // Discount input is percent in this logic
+    const tax = subtotal * (taxRate / 100);
     const discountVal = parseFloat(discountInput.value) || 0;
     const discountAmt = subtotal * (discountVal / 100);
-
     const total = subtotal + tax - discountAmt;
 
     subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
     taxEl.textContent = `₹${tax.toFixed(2)}`;
     totalEl.textContent = `₹${total.toFixed(2)}`;
+
+    // Update Total Count Display
+    const countEl = document.getElementById('total-count-display');
+    if (countEl) {
+        countEl.textContent = `${totalCount} Item${totalCount !== 1 ? 's' : ''}`;
+    }
 }
 
 /* Listeners */
