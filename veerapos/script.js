@@ -13,6 +13,7 @@ const services = [
 let cart = [];
 let taxRate = 18;
 let discountPercent = 0;
+let currentDataset = services;
 
 /* Elements */
 const grid = document.getElementById('services-grid');
@@ -42,12 +43,49 @@ function init() {
 
             const cat = pill.dataset.cat;
             if (cat === 'all') {
+                currentDataset = services;
                 renderGrid(services);
             } else {
-                const filtered = services.filter(s => s.category === cat);
-                renderGrid(filtered);
+                currentDataset = services.filter(s => s.category === cat);
+                renderGrid(currentDataset);
             }
         });
+    });
+}
+
+/* Menu Navigation Logic */
+const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // If this item is already active, remove active class to close submenu
+        if (item.classList.contains('active')) {
+            item.classList.remove('active');
+        } else {
+            // Remove active class from all menu items
+            menuItems.forEach(i => i.classList.remove('active'));
+            // Add active class to clicked item
+            item.classList.add('active');
+        }
+    });
+});
+
+/* Mobile Menu Toggle */
+const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+const sidebar = document.querySelector('.sidebar');
+
+if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+    });
+
+    // Optional: Close sidebar when clicking outside (on main content)
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 1024 &&
+            !sidebar.contains(e.target) &&
+            !mobileMenuBtn.contains(e.target) &&
+            sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+        }
     });
 }
 
@@ -57,9 +95,10 @@ function renderGrid(dataset) {
     dataset.forEach(item => {
         const div = document.createElement('div');
         div.className = 'service-card';
-        div.onclick = (e) => {
-            if (!e.target.closest('.card-step-btn')) addToCart(item); // Don't double add if clicking stepper (if we had logic there)
-        };
+
+        // Find current qty in cart
+        const inCart = cart.find(c => c.id === item.id);
+        const qty = inCart ? inCart.qty : 0;
 
         div.innerHTML = `
             <div class="card-img-placeholder">${item.icon}</div>
@@ -70,12 +109,30 @@ function renderGrid(dataset) {
             <div class="card-footer">
                 <span class="card-price">₹${item.price}</span>
                 <div class="card-stepper">
-                    <button class="card-step-btn">-</button>
-                    <span class="card-step-val">1</span>
-                    <button class="card-step-btn">+</button>
+                    <button class="card-step-btn minus-btn">-</button>
+                    <span class="card-step-val" id="grid-qty-${item.id}">${qty}</span>
+                    <button class="card-step-btn plus-btn">+</button>
                 </div>
             </div>
         `;
+
+        // Smart Click Handling
+        div.addEventListener('click', (e) => {
+            const target = e.target;
+
+            if (target.classList.contains('plus-btn')) {
+                addToCart(item);
+            } else if (target.classList.contains('minus-btn')) {
+                const existing = cart.find(c => c.id === item.id);
+                if (existing) {
+                    updateQty(item.id, -1);
+                }
+            } else if (!target.closest('.card-stepper')) {
+                // If clicking card body (not stepper), add 1
+                addToCart(item);
+            }
+        });
+
         grid.appendChild(div);
     });
 }
@@ -90,6 +147,7 @@ function addToCart(item) {
         cart.push({ ...item, qty: 1, customPrice: item.price });
     }
     renderCart();
+    renderGrid(currentDataset); // Re-render to toggle Add -> Stepper if 0 -> 1
 }
 
 function updateQty(id, delta) {
@@ -101,12 +159,19 @@ function updateQty(id, delta) {
         cart = cart.filter(c => c.id !== id);
     }
     renderCart();
+    renderGrid(currentDataset); // Re-render to toggle Stepper -> Add if 1 -> 0
 }
 
 function removeFromCart(id) {
     cart = cart.filter(c => c.id !== id);
     renderCart();
+    renderGrid(currentDataset); // Update grid to show 'Add' again
 }
+
+/* UI Updates */
+// updateGridUI is now redundant because we re-render grid on every cart change to handle state toggle.
+// We can remove it or keep it for small updates if we weren't doing full re-renders, 
+// but since we are swapping DOM elements (Button vs Stepper), re-render is safer/easier.
 
 let currentEditId = null;
 
@@ -206,8 +271,8 @@ document.getElementById('edit-price-input').addEventListener('keypress', (e) => 
 
 searchInput.addEventListener('input', (e) => {
     const term = e.target.value.toLowerCase();
-    const filtered = services.filter(s => s.name.toLowerCase().includes(term));
-    renderGrid(filtered);
+    currentDataset = services.filter(s => s.name.toLowerCase().includes(term));
+    renderGrid(currentDataset);
 });
 
 discountInput.addEventListener('input', updateTotals);
@@ -215,6 +280,7 @@ discountInput.addEventListener('input', updateTotals);
 document.getElementById('clear-cart-btn').addEventListener('click', () => {
     cart = [];
     renderCart();
+    renderGrid(currentDataset);
 });
 
 document.getElementById('checkout-btn').addEventListener('click', () => {
