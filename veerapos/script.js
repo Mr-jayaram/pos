@@ -247,13 +247,17 @@ function updateTotals() {
 
     const totalCount = cart.reduce((acc, item) => acc + item.qty, 0);
 
-    const tax = subtotal * (taxRate / 100);
+    // Discount input is percent in this logic (or fixed amount based on prior conversation, sticking to code logic which treats input as %)
+    // Wait, the previous code treated discountInput as percent: `const discountAmt = subtotal * (discountVal / 100);`
+    // I will keep existing discount logic but remove tax.
+
     const discountVal = parseFloat(discountInput.value) || 0;
     const discountAmt = subtotal * (discountVal / 100);
-    const total = subtotal + tax - discountAmt;
+
+    const total = subtotal - discountAmt;
 
     subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
-    taxEl.textContent = `₹${tax.toFixed(2)}`;
+    // taxEl.textContent = ... (Removed)
     totalEl.textContent = `₹${total.toFixed(2)}`;
 
     // Update Total Count Display
@@ -312,5 +316,16 @@ document.getElementById('checkout-btn').addEventListener('click', () => {
 document.getElementById('close-modal').addEventListener('click', () => {
     document.getElementById('invoice-modal').classList.add('hidden');
 });
+
+/* Sheet Logic */
+const sheetHandle = document.getElementById('sheet-handle');
+const rightPanel = document.querySelector('.right-panel');
+
+if (sheetHandle) {
+    sheetHandle.addEventListener('click', () => {
+        rightPanel.classList.toggle('expanded');
+    });
+}
+// Optional: close empty sheet logic or overlay? Left simple as requested toggle.
 
 init();
