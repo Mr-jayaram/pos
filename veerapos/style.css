@@ -1,6 +1,4 @@
-/* =========================================
-   POS DREAMS | PREMIUM UI
-   ========================================= */
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -1192,10 +1190,7 @@ body {
     }
 
     .welcome-section {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: none;
     }
 
     .header-actions {
