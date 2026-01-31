@@ -215,11 +215,10 @@ body {
 
 /* Service Grid */
 .services-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 0.8rem;
-        padding-bottom: 1rem;
-        height: 50vh;
-        overflow: scroll;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding-bottom: 2rem;
 }
 
 .service-card {
@@ -689,9 +688,14 @@ body {
 
     /* Compact Layout tweaks */
     .services-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        /* grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.8rem;
+        padding-bottom: 1rem; */
+         grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
         gap: 0.8rem;
         padding-bottom: 1rem;
+        height: 50vh;
+        overflow: scroll;
     }
 
     .service-card {
