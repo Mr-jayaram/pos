@@ -145,8 +145,8 @@ body {
 .category-tabs {
     display: flex;
     gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 34px;
+    /* margin-bottom: 2rem; */
+    padding-bottom: 15px;
     width: 100%;
     /* scrollbar-width: none; */
     overflow-x: scroll;
