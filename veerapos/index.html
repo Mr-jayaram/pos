@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Dreams | PixelStudio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Using standard SVGs for icons to match the look -->
+</head>
+
+<body>
+
+    <div class="app-layout">
+
+        <!-- 1. Left Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-mark">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </div>
+
+            <!-- Standard Menu -->
+            <div class="nav-items menu-layout">
+                <button class="menu-item active" title="Dashboard">
+                    <div class="icon">�</div>
+                    <span class="tooltip">Dashboard</span>
+                </button>
+                <button class="menu-item" title="Sales">
+                    <div class="icon">🛍️</div>
+                    <span class="tooltip">Sales</span>
+                </button>
+                <button class="menu-item" title="Customers">
+                    <div class="icon">�</div>
+                    <span class="tooltip">People</span>
+                </button>
+                <button class="menu-item" title="Reports">
+                    <div class="icon">�</div>
+                    <span class="tooltip">Stats</span>
+                </button>
+                <button class="menu-item" title="Settings">
+                    <div class="icon">⚙️</div>
+                    <span class="tooltip">Settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 2. Main Content (Center) -->
+        <main class="center-panel">
+            <header class="top-bar">
+                <div class="welcome-section">
+                    <h1>Welcome, PixelAdmin</h1>
+                    <p id="current-date">Fetching date...</p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="search-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Search Service...">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Category Filter (Moved to Top) -->
+            <div class="category-tabs" id="category-filters">
+                <button class="cat-pill active" data-cat="all">All</button>
+                <button class="cat-pill" data-cat="Photo">Photos 📸</button>
+                <button class="cat-pill" data-cat="Design">Design 🎨</button>
+                <button class="cat-pill" data-cat="Print">Printing 🖨️</button>
+                <button class="cat-pill" data-cat="Mobile">Mobiles 📱</button>
+                <button class="cat-pill" data-cat="Shoes">Shoes 👟</button>
+                <button class="cat-pill" data-cat="Computer">Laptops 💻</button>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="services-grid" class="services-grid">
+                <!-- Items injected by JS -->
+            </div>
+        </main>
+
+        <!-- 3. Right Panel (Cart) -->
+        <aside class="right-panel">
+            <div class="order-header">
+                <h2>Order List</h2>
+                <div class="order-id">#ORD<span id="order-id-display">001</span></div>
+            </div>
+
+            <div class="customer-section">
+                <label>Customer Information</label>
+                <div class="customer-input-row">
+                    <input type="text" id="customer-name" placeholder="Walk in Customer">
+                    <button class="add-user-btn">+</button>
+                </div>
+            </div>
+
+            <div class="order-details-header">
+                <h3>Order Details</h3>
+                <button id="clear-cart-btn" class="text-danger">Clear all</button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div class="cart-list-container">
+                <div id="cart-items-wrapper">
+                    <!-- Cart Items go here -->
+                    <div class="empty-cart-msg">No items added</div>
+                </div>
+            </div>
+
+            <div class="checkout-section">
+                <!-- Coupon Box -->
+                <div class="discount-box">
+                    <div class="discount-icon">%</div>
+                    <div class="discount-info">
+                        <span class="disc-title">Discount Option</span>
+                        <input type="number" id="discount-input" placeholder="0" class="disc-input">
+                    </div>
+                    <div class="delete-icon">🗑️</div>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="payment-summary">
+                    <div class="row">
+                        <span>Subtotal</span>
+                        <span id="subtotal-display">₹0.00</span>
+                    </div>
+                    <div class="row">
+                        <span>Tax (18%)</span>
+                        <span id="tax-display">₹0.00</span>
+                    </div>
+                    <div class="row total">
+                        <span>Total</span>
+                        <span id="total-display">₹0.00</span>
+                    </div>
+                </div>
+
+                <button id="checkout-btn" class="checkout-btn">
+                    Pay Now
+                </button>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- Price Edit Modal -->
+    <div id="price-modal" class="modal hidden">
+        <div class="modal-content" style="width: 300px; padding: 1.5rem;">
+            <button id="close-price-modal" class="close-btn"
+                style="top: 10px; right: 10px; font-size: 1.5rem;">&times;</button>
+            <h3 style="margin-bottom: 1rem;">Edit Price</h3>
+            <input type="number" id="edit-price-input" placeholder="Enter new price"
+                style="width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 4px;">
+            <button id="save-price-btn" class="checkout-btn" style="margin-top: 0; padding: 0.5rem;">Update
+                Price</button>
+        </div>
+    </div>
+
+    <!-- Hidden Printable Invoice -->
+    <div id="invoice-modal" class="modal hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-btn">&times;</button>
+            <div id="invoice-print-area">
+                <!-- Keep existing simple print layout structure -->
+                <div class="invoice-container">
+                    <h1>INVOICE</h1>
+                    <p>Bill To: <span id="inv-customer"></span></p>
+                    <table class="invoice-table">
+                        <thead style="text-align:left">
+                            <tr>
+                                <th>Item</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inv-body"></tbody>
+                    </table>
+                    <div style="text-align:right; margin-top:20px;">
+                        <h3>Total: <span id="inv-total"></span></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button onclick="window.print()" class="btn primary">Print</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
