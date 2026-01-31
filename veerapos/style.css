@@ -673,6 +673,7 @@ body {
         z-index: 100;
         position: relative;
         height: 340px;
+        z-index: 0;
     }
 
     /* Internal scrolling for cart items only */
