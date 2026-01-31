@@ -660,20 +660,19 @@ body {
 
     /* Right Panel (Billing): Fixed Bottom Area */
     .right-panel {
-        width: 100%;
-        height: 280px;
-        /* Fixed Height */
+              border-radius: 10px;
+        width: 94%;
+        margin-left: 3%;
         border-left: none;
-        margin-bottom: 50px;
-        /* Space for navbar */
+        margin-bottom: 60px;
         padding: 0.8rem;
         overflow: hidden;
-        /* Don't scroll the container */
         display: flex;
         flex-direction: column;
         box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1);
         z-index: 100;
         position: relative;
+        height: 340px;
     }
 
     /* Internal scrolling for cart items only */
