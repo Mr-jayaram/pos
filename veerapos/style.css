@@ -660,6 +660,10 @@ body {
         border-bottom: 2px solid var(--border);
     }
 
+    .category-tabs {
+        height: auto;
+    }
+
     /* Right Panel (Billing): Fixed Bottom Area */
     .right-panel {
               border-radius: 10px;
@@ -694,16 +698,15 @@ body {
         gap: 0.8rem;
         padding-bottom: 1rem; */
          display: flex;
-         flex-wrap: wrap;
+         flex-wrap: nowrap;
         gap: 0.8rem;
         padding-bottom: 1rem;
-        height: 50vh;
-        overflow: scroll;
+        overflow-x: scroll;
     }
 
     .service-card {
         padding: 0.6rem;
-        flex: 1 1 140px;
+        flex: 0 0 140px;
     }
 
     .card-img-placeholder {
