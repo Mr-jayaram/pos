@@ -317,15 +317,71 @@ document.getElementById('close-modal').addEventListener('click', () => {
     document.getElementById('invoice-modal').classList.add('hidden');
 });
 
-/* Sheet Logic */
+/* Sheet Logic (Drag to Resize) */
 const sheetHandle = document.getElementById('sheet-handle');
 const rightPanel = document.querySelector('.right-panel');
 
-if (sheetHandle) {
-    sheetHandle.addEventListener('click', () => {
-        rightPanel.classList.toggle('expanded');
-    });
+if (sheetHandle && rightPanel) {
+    let startY = 0;
+    let startHeight = 0;
+    let isDragging = false;
+
+    // Helper to get clientY from touch or mouse
+    const getClientY = (e) => e.touches ? e.touches[0].clientY : e.clientY;
+
+    const onPointerDown = (e) => {
+        isDragging = true;
+        startY = getClientY(e);
+        startHeight = rightPanel.getBoundingClientRect().height;
+
+        // Disable transition during drag for direct 1:1 movement
+        rightPanel.style.transition = 'none';
+
+        document.addEventListener('mousemove', onPointerMove);
+        document.addEventListener('touchmove', onPointerMove, { passive: false });
+        document.addEventListener('mouseup', onPointerUp);
+        document.addEventListener('touchend', onPointerUp);
+    };
+
+    const onPointerMove = (e) => {
+        if (!isDragging) return;
+        // Prevent scrolling background on mobile while dragging
+        if (e.cancelable) e.preventDefault();
+
+        const currentY = getClientY(e);
+        const deltaY = startY - currentY; // Dragging up (negative Y) increases height
+        const newHeight = startHeight + deltaY;
+
+        // Constraints
+        const maxHeight = window.innerHeight * 0.95; // Max 95% screen
+        const minHeight = 80; // Min header height
+
+        if (newHeight >= minHeight && newHeight <= maxHeight) {
+            rightPanel.style.height = `${newHeight}px`;
+
+            // Toggle expanded class logic for visibility if needed, 
+            // but rely mainly on direct height for "custom" feel.
+            if (newHeight > 200) {
+                rightPanel.classList.add('expanded');
+            } else {
+                rightPanel.classList.remove('expanded');
+            }
+        }
+    };
+
+    const onPointerUp = () => {
+        isDragging = false;
+        // Re-enable smooth transition for snaps or subsequent toggles
+        rightPanel.style.transition = 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)';
+
+        document.removeEventListener('mousemove', onPointerMove);
+        document.removeEventListener('touchmove', onPointerMove);
+        document.removeEventListener('mouseup', onPointerUp);
+        document.removeEventListener('touchend', onPointerUp);
+    };
+
+    sheetHandle.addEventListener('mousedown', onPointerDown);
+    sheetHandle.addEventListener('touchstart', onPointerDown, { passive: false });
 }
-// Optional: close empty sheet logic or overlay? Left simple as requested toggle.
 
 init();
