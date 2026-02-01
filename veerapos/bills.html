@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS | Billing List</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="app-layout dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-mark">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </div>
+
+            <!-- Standard Menu -->
+            <div class="nav-items menu-layout">
+                <!-- Dashboard -->
+                <button class="menu-item" title="Dashboard" onclick="window.location.href='dashboard.html'">
+                    <div class="icon">📊</div>
+                    <span class="tooltip">Dashboard</span>
+                </button>
+
+                <!-- Sales (Active for Billing List) -->
+                <button class="menu-item active" title="Sales" onclick="this.classList.toggle('expanded')">
+                    <div class="icon">🛍️</div>
+                    <span class="tooltip">Sales</span>
+                    <div class="submenu">
+                        <a href="index.html" class="submenu-item">New Sale</a>
+                        <a href="bills.html" class="submenu-item"
+                            style="color:var(--primary); background:var(--primary-light);">Billing List</a>
+                    </div>
+                </button>
+
+                <button class="menu-item" title="Customers" onclick="this.classList.toggle('expanded')">
+                    <div class="icon">👥</div>
+                    <span class="tooltip">People</span>
+                    <div class="submenu">
+                        <a href="customers.html" class="submenu-item">Customer List</a>
+                        <a href="add-customer.html" class="submenu-item">Add Customer</a>
+                    </div>
+                </button>
+                <button class="menu-item" title="Settings">
+                    <div class="icon">⚙️</div>
+                    <span class="tooltip">Settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 2. Main Content (Center) -->
+        <main class="center-panel">
+            <header class="top-bar">
+                <div class="welcome-section">
+                    <h1>Billing List</h1>
+                    <p id="current-date">Fetching date...</p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="search-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" placeholder="Search Invoice...">
+                    </div>
+                    <button id="mobile-menu-btn" class="mobile-menu-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <button class="checkout-btn" style="width:auto; margin:0; padding: 0.5rem 1rem;"
+                        onclick="window.location.href='index.html'">
+                        + New Sale
+                    </button>
+                </div>
+            </header>
+
+            <!-- Billing List Content -->
+            <div id="view-bills" class="view-section">
+
+                <!-- Filters Row -->
+                <div class="recent-header"
+                    style="background:white; padding:1rem; border-radius:var(--radius-md); box-shadow:var(--shadow-sm); border:1px solid var(--border); margin-bottom:1.5rem;">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <select
+                            style="padding:0.5rem; border:1px solid var(--border); border-radius:4px; outline:none;">
+                            <option>All Status</option>
+                            <option>Paid</option>
+                            <option>Pending</option>
+                            <option>Failed</option>
+                        </select>
+                        <select
+                            style="padding:0.5rem; border:1px solid var(--border); border-radius:4px; outline:none;">
+                            <option>Last 30 Days</option>
+                            <option>This Month</option>
+                            <option>Last Month</option>
+                        </select>
+                    </div>
+                    <div style="font-weight:600; color:var(--text-muted);">
+                        Total Bills: 1,204
+                    </div>
+                </div>
+
+                <!-- Bills Table -->
+                <div class="table-card">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Invoice ID</th>
+                                    <th>Date</th>
+                                    <th>Customer</th>
+                                    <th>Payment Method</th>
+                                    <th>Status</th>
+                                    <th>Amount</th>
+                                    <th style="text-align:right;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary);">#INV-00124</td>
+                                    <td>Oct 24, 2024</td>
+                                    <td>
+                                        <div class="td-team">
+                                            <div class="img-circle">JD</div>
+                                            <span>John Doe</span>
+                                        </div>
+                                    </td>
+                                    <td>Credit Card</td>
+                                    <td><span class="status paid">Paid</span></td>
+                                    <td style="font-weight:bold;">$1,200.00</td>
+                                    <td style="text-align:right;">
+                                        <button
+                                            style="background:none; border:none; cursor:pointer; margin-right:5px;">📄</button>
+                                        <button style="background:none; border:none; cursor:pointer;">⋮</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary);">#INV-00123</td>
+                                    <td>Oct 24, 2024</td>
+                                    <td>
+                                        <div class="td-team">
+                                            <div class="img-circle">AS</div>
+                                            <span>Alice Smith</span>
+                                        </div>
+                                    </td>
+                                    <td>Cash</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td style="font-weight:bold;">$850.00</td>
+                                    <td style="text-align:right;">
+                                        <button
+                                            style="background:none; border:none; cursor:pointer; margin-right:5px;">📄</button>
+                                        <button style="background:none; border:none; cursor:pointer;">⋮</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary);">#INV-00122</td>
+                                    <td>Oct 23, 2024</td>
+                                    <td>
+                                        <div class="td-team">
+                                            <div class="img-circle">RJ</div>
+                                            <span>Robert Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td>Online</td>
+                                    <td><span class="status paid">Paid</span></td>
+                                    <td style="font-weight:bold;">$2,300.00</td>
+                                    <td style="text-align:right;">
+                                        <button
+                                            style="background:none; border:none; cursor:pointer; margin-right:5px;">📄</button>
+                                        <button style="background:none; border:none; cursor:pointer;">⋮</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary);">#INV-00121</td>
+                                    <td>Oct 22, 2024</td>
+                                    <td>
+                                        <div class="td-team">
+                                            <div class="img-circle">EW</div>
+                                            <span>Emily White</span>
+                                        </div>
+                                    </td>
+                                    <td>Credit Card</td>
+                                    <td><span class="status failed">Failed</span></td>
+                                    <td style="font-weight:bold;">$150.00</td>
+                                    <td style="text-align:right;">
+                                        <button
+                                            style="background:none; border:none; cursor:pointer; margin-right:5px;">📄</button>
+                                        <button style="background:none; border:none; cursor:pointer;">⋮</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary);">#INV-00120</td>
+                                    <td>Oct 21, 2024</td>
+                                    <td>
+                                        <div class="td-team">
+                                            <div class="img-circle">MB</div>
+                                            <span>Michael Brown</span>
+                                        </div>
+                                    </td>
+                                    <td>Cash</td>
+                                    <td><span class="status paid">Paid</span></td>
+                                    <td style="font-weight:bold;">$3,450.00</td>
+                                    <td style="text-align:right;">
+                                        <button
+                                            style="background:none; border:none; cursor:pointer; margin-right:5px;">📄</button>
+                                        <button style="background:none; border:none; cursor:pointer;">⋮</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight:600; color:var(--primary);">#INV-00119</td>
+                                    <td>Oct 20, 2024</td>
+                                    <td>
+                                        <div class="td-team">
+                                            <div class="img-circle">JS</div>
+                                            <span>Jane Smith</span>
+                                        </div>
+                                    </td>
+                                    <td>Card</td>
+                                    <td><span class="status paid">Paid</span></td>
+                                    <td style="font-weight:bold;">$450.00</td>
+                                    <td style="text-align:right;">
+                                        <button
+                                            style="background:none; border:none; cursor:pointer; margin-right:5px;">📄</button>
+                                        <button style="background:none; border:none; cursor:pointer;">⋮</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content" style="width: 320px; padding: 1.5rem;">
+            <button id="close-settings-modal" class="close-btn"
+                style="top: 10px; right: 10px; font-size: 1.5rem;">&times;</button>
+            <h3 style="margin-bottom: 1.5rem;">Settings</h3>
+
+            <div class="setting-row"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <span style="font-weight: 500;">Enable GST (18%)</span>
+                <!-- Simple Toggle Switch -->
+                <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                    <input type="checkbox" id="gst-toggle">
+                    <span class="slider round"
+                        style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+                </label>
+            </div>
+
+            <button id="save-settings-btn" class="checkout-btn" style="padding: 0.8rem;">Save Changes</button>
+        </div>
+    </div>
+
+    <style>
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: var(--primary);
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+
+    <!-- Re-use basic script for date and mobile menu -->
+    <script>
+        // Simple init for bills page components
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.querySelector('.sidebar');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 1024 &&
+                    !sidebar.contains(e.target) &&
+                    !mobileMenuBtn.contains(e.target) &&
+                    sidebar.classList.contains('active')) {
+                    sidebar.classList.remove('active');
+                }
+            });
+        }
+
+        // Settings Modal Logic
+        let gstEnabled = localStorage.getItem('gstEnabled') === 'true';
+        const_settingsModal = document.getElementById('settings-modal');
+        const gstToggle = document.getElementById('gst-toggle');
+        const closeSettingsBtn = document.getElementById('close-settings-modal');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+        const settingsMenuBtn = document.querySelector('.menu-item[title="Settings"]');
+
+        if (settingsMenuBtn) {
+            settingsMenuBtn.addEventListener('click', () => {
+                const modal = document.getElementById('settings-modal');
+                const toggle = document.getElementById('gst-toggle');
+                if (toggle) toggle.checked = localStorage.getItem('gstEnabled') === 'true';
+                if (modal) modal.classList.remove('hidden');
+            });
+        }
+
+        if (closeSettingsBtn) {
+            closeSettingsBtn.addEventListener('click', () => {
+                document.getElementById('settings-modal').classList.add('hidden');
+            });
+        }
+
+        if (saveSettingsBtn) {
+            saveSettingsBtn.addEventListener('click', () => {
+                const toggle = document.getElementById('gst-toggle');
+                const modal = document.getElementById('settings-modal');
+                if (toggle) {
+                    localStorage.setItem('gstEnabled', toggle.checked);
+                }
+                if (modal) modal.classList.add('hidden');
+            });
+        }
+    </script>
+</body>
+
+</html>

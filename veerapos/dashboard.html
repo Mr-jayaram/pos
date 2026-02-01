@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+
+    <div class="app-layout dashboard-layout">
+
+        <!-- 1. Left Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="logo-mark">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2">
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                </svg>
+            </div>
+
+            <!-- Standard Menu -->
+            <div class="nav-items menu-layout">
+                <!-- Dashboard Active -->
+                <button class="menu-item active" title="Dashboard" onclick="window.location.href='dashboard.html'">
+                    <div class="icon">📊</div>
+                    <span class="tooltip">Dashboard</span>
+
+                </button>
+
+                <!-- Navigate to POS -->
+                <button class="menu-item" title="Sales" onclick="this.classList.toggle('expanded')">
+                    <div class="icon">🛍️</div>
+                    <span class="tooltip">Sales</span>
+                    <div class="submenu">
+                        <a href="index.html" class="submenu-item">New Sale</a>
+                        <a href="bills.html" class="submenu-item">Billing List</a>
+                    </div>
+                </button>
+
+                <button class="menu-item" title="Customers" onclick="this.classList.toggle('expanded')">
+                    <div class="icon">👥</div>
+                    <span class="tooltip">People</span>
+                    <div class="submenu">
+                        <a href="customers.html" class="submenu-item">Customer List</a>
+                        <a href="add-customer.html" class="submenu-item">Add Customer</a>
+                    </div>
+                </button>
+                <button class="menu-item" title="Settings">
+                    <div class="icon">⚙️</div>
+                    <span class="tooltip">Settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 2. Main Content (Center) -->
+        <main class="center-panel">
+            <header class="top-bar">
+                <div class="welcome-section">
+                    <h1>Dashboard</h1>
+                    <p id="current-date">Fetching date...</p>
+                </div>
+
+                <div class="header-actions">
+                    <div class="search-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <button id="mobile-menu-btn" class="mobile-menu-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div id="view-dashboard" class="view-section">
+                <!-- 1. Stats Row -->
+                <div class="stats-grid">
+                    <!-- Card 1 -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$8,458,798</div>
+                                <div class="stat-label">Profit</div>
+                            </div>
+                            <div class="stat-icon icon-blue">💰</div>
+                        </div>
+                        <div class="stat-trend trend-up">
+                            <span>+35% vs Last Month</span>
+                            <a href="#" class="view-link">View All</a>
+                        </div>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$48,988,78</div>
+                                <div class="stat-label">Invoice Due</div>
+                            </div>
+                            <div class="stat-icon icon-green">🕒</div>
+                        </div>
+                        <div class="stat-trend trend-up">
+                            <span>+35% vs Last Month</span>
+                            <a href="#" class="view-link">View All</a>
+                        </div>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$8,980,097</div>
+                                <div class="stat-label">Total Expenses</div>
+                            </div>
+                            <div class="stat-icon icon-orange">🎯</div>
+                        </div>
+                        <div class="stat-trend trend-up">
+                            <span>+41% vs Last Month</span>
+                            <a href="#" class="view-link">View All</a>
+                        </div>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div>
+                                <div class="stat-value">$78,458,798</div>
+                                <div class="stat-label">Payment Returns</div>
+                            </div>
+                            <div class="stat-icon icon-purple">#️⃣</div>
+                        </div>
+                        <div class="stat-trend trend-down">
+                            <span>-20% vs Last Month</span>
+                            <a href="#" class="view-link">View All</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Charts Row -->
+                <div class="charts-row">
+                    <!-- Main Chart -->
+                    <div class="chart-container main-chart">
+                        <div class="chart-header">
+                            <h3>Sales & Purchase</h3>
+                            <div class="chart-filters">
+                                <button>1D</button>
+                                <button>1W</button>
+                                <button>1M</button>
+                                <button>3M</button>
+                                <button>6M</button>
+                                <button class="active">1Y</button>
+                            </div>
+                        </div>
+                        <div class="chart-summaries">
+                            <div class="sum-item">
+                                <span class="dot orange"></span>
+                                <div>
+                                    <span class="lbl">Total Purchase</span>
+                                    <span class="val">3K</span>
+                                </div>
+                            </div>
+                            <div class="sum-item">
+                                <span class="dot orange-dark"></span>
+                                <div>
+                                    <span class="lbl">Total Sales</span>
+                                    <span class="val">1K</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sales-chart"></div>
+                    </div>
+
+                    <!-- Right Side Widgets -->
+                    <div class="side-widgets">
+                        <!-- Overall Info -->
+                        <div class="widget-card">
+                            <div class="widget-header">
+                                <span class="icon-blue-sm">ℹ️</span>
+                                <h3>Overall Information</h3>
+                            </div>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="icon">👤</div>
+                                    <div class="lbl">Suppliers</div>
+                                    <div class="val">6987</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="icon">👥</div>
+                                    <div class="lbl">Customer</div>
+                                    <div class="val">4896</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="icon">🛒</div>
+                                    <div class="lbl">Orders</div>
+                                    <div class="val">487</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customers Overview -->
+                        <div class="widget-card" style="flex:1;">
+                            <div class="widget-header">
+                                <h3>Customers Overview</h3>
+                                <select class="time-select"
+                                    style="border:none; color:var(--text-light); font-weight:500; outline:none;">
+                                    <option>Today</option>
+                                    <option>Weekly</option>
+                                </select>
+                            </div>
+                            <div class="donut-wrapper">
+                                <div id="customer-chart"></div>
+                                <div class="donut-legend">
+                                    <div class="leg-item">
+                                        <div class="val">5.5K</div>
+                                        <div class="lbl">First Time</div>
+                                        <div class="badge green">⬆ 25%</div>
+                                    </div>
+                                    <div class="leg-item">
+                                        <div class="val">3.5K</div>
+                                        <div class="lbl">Return</div>
+                                        <div class="badge green">⬆ 21%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Recent Transactions & Top Products -->
+                <div class="recent-grid">
+                    <!-- Recent Transactions -->
+                    <div class="table-card">
+                        <div class="recent-header">
+                            <h2>Recent Transactions</h2>
+                            <button>View All</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Oct 24, 2024</td>
+                                        <td>
+                                            <div class="td-team">
+                                                <div class="img-circle">JD</div>
+                                                <span>John Doe</span>
+                                            </div>
+                                        </td>
+                                        <td>$1,200.00</td>
+                                        <td><span class="status paid">Paid</span></td>
+                                        <td><span class="view-link">Details</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Oct 24, 2024</td>
+                                        <td>
+                                            <div class="td-team">
+                                                <div class="img-circle">AS</div>
+                                                <span>Alice Smith</span>
+                                            </div>
+                                        </td>
+                                        <td>$850.00</td>
+                                        <td><span class="status pending">Pending</span></td>
+                                        <td><span class="view-link">Details</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Oct 23, 2024</td>
+                                        <td>
+                                            <div class="td-team">
+                                                <div class="img-circle">RJ</div>
+                                                <span>Robert Johnson</span>
+                                            </div>
+                                        </td>
+                                        <td>$2,300.00</td>
+                                        <td><span class="status paid">Paid</span></td>
+                                        <td><span class="view-link">Details</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Oct 22, 2024</td>
+                                        <td>
+                                            <div class="td-team">
+                                                <div class="img-circle">EW</div>
+                                                <span>Emily White</span>
+                                            </div>
+                                        </td>
+                                        <td>$150.00</td>
+                                        <td><span class="status failed">Failed</span></td>
+                                        <td><span class="view-link">Details</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Oct 21, 2024</td>
+                                        <td>
+                                            <div class="td-team">
+                                                <div class="img-circle">MB</div>
+                                                <span>Michael Brown</span>
+                                            </div>
+                                        </td>
+                                        <td>$3,450.00</td>
+                                        <td><span class="status paid">Paid</span></td>
+                                        <td><span class="view-link">Details</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Top Selling Products -->
+                    <div class="table-card">
+                        <div class="recent-header">
+                            <h2>Top Selling Products</h2>
+                            <button>See All</button>
+                        </div>
+                        <div class="product-list">
+                            <div class="product-item">
+                                <div class="product-info">
+                                    <div class="product-img">📷</div>
+                                    <div class="product-desc">
+                                        <h4>Canon DSLR</h4>
+                                        <span>Camera & Photo</span>
+                                    </div>
+                                </div>
+                                <div class="product-price">$12k</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-info">
+                                    <div class="product-img">👟</div>
+                                    <div class="product-desc">
+                                        <h4>Nike Air Max</h4>
+                                        <span>Shoes</span>
+                                    </div>
+                                </div>
+                                <div class="product-price">$8.5k</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-info">
+                                    <div class="product-img">💻</div>
+                                    <div class="product-desc">
+                                        <h4>MacBook Pro</h4>
+                                        <span>Computers</span>
+                                    </div>
+                                </div>
+                                <div class="product-price">$6.4k</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-info">
+                                    <div class="product-img">🎧</div>
+                                    <div class="product-desc">
+                                        <h4>Sony WH-1000XM5</h4>
+                                        <span>Audio</span>
+                                    </div>
+                                </div>
+                                <div class="product-price">$4.2k</div>
+                            </div>
+                            <div class="product-item">
+                                <div class="product-info">
+                                    <div class="product-img">📱</div>
+                                    <div class="product-desc">
+                                        <h4>iPhone 15 Pro</h4>
+                                        <span>Mobiles</span>
+                                    </div>
+                                </div>
+                                <div class="product-price">$3.1k</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </main>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal hidden">
+            <div class="modal-content" style="width: 320px; padding: 1.5rem;">
+                <button id="close-settings-modal" class="close-btn"
+                    style="top: 10px; right: 10px; font-size: 1.5rem;">&times;</button>
+                <h3 style="margin-bottom: 1.5rem;">Settings</h3>
+
+                <div class="setting-row"
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <span style="font-weight: 500;">Enable GST (18%)</span>
+                    <!-- Simple Toggle Switch -->
+                    <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                        <input type="checkbox" id="gst-toggle">
+                        <span class="slider round"
+                            style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px;"></span>
+                    </label>
+                </div>
+
+                <button id="save-settings-btn" class="checkout-btn" style="padding: 0.8rem;">Save Changes</button>
+            </div>
+        </div>
+
+        <style>
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 20px;
+                width: 20px;
+                left: 3px;
+                bottom: 3px;
+                background-color: white;
+                transition: .4s;
+                border-radius: 50%;
+            }
+
+            input:checked+.slider {
+                background-color: var(--primary);
+            }
+
+            input:checked+.slider:before {
+                transform: translateX(24px);
+            }
+        </style>
+        <!-- No Right Panel for Dashboard to give it full width -->
+
+    </div>
+
+    <!-- Script for Dashboard -->
+    <script src="dashboard.js"></script>
+</body>
+
+</html>
