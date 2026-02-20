@@ -48,9 +48,7 @@
         }
 
         header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.98);
             padding: 20px 80px;
             display: flex;
             justify-content: space-between;
@@ -265,8 +263,7 @@
             position: absolute;
             right: 0;
             bottom: 40px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             padding: 20px 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -419,13 +416,12 @@
         .gallery-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(45, 30, 23, 0.7);
+            background: rgba(45, 30, 23, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: var(--transition);
-            backdrop-filter: blur(4px);
         }
 
         .gallery-item:hover .gallery-overlay {
@@ -823,18 +819,17 @@
         .mobile-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(45, 30, 23, 0.4);
-            backdrop-filter: blur(4px);
+            background: rgba(0, 0, 0, 0.5);
             z-index: 1050;
             opacity: 0;
             visibility: hidden;
             transition: var(--transition);
         }
 
-        .mobile-overlay.active {
+        /* .mobile-overlay.active {
             opacity: 1;
             visibility: visible;
-        }
+        } */
 
         .menu-toggle {
             display: none;
@@ -938,19 +933,29 @@
             }
 
             .testimonial-card {
-                flex: 0 0 85%;
+                flex: 0 0 90%;
                 padding: 30px 20px;
                 scroll-snap-align: center;
             }
 
             .testimonials {
-                margin: 0 15px;
+                width: 100%;
+                margin: 0 auto;
                 padding: 50px 20px;
                 border-radius: 35px;
             }
 
             .contact-card {
+                width: 100%;
+                margin: 0 auto;
                 padding: 40px 20px;
+                border-radius: 35px;
+            }
+
+            .map-wrapper {
+                width: 95%;
+                margin: 0 auto;
+                height: 350px;
                 border-radius: 35px;
             }
 
@@ -977,8 +982,8 @@
                 background: var(--white);
                 flex-direction: column;
                 justify-content: flex-start;
-                padding: 100px 30px;
-                gap: 20px;
+                padding: 40px 30px;
+                gap: 5px;
                 transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
                 box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
                 z-index: 1100;
@@ -1024,6 +1029,24 @@
             .menu-toggle.active span:nth-child(3) {
                 transform: rotate(-45deg) translateY(-10px);
             }
+
+            .sidebar-logo {
+                display: block;
+                font-family: 'Pacifico', cursive;
+                font-size: 28px;
+                color: var(--berry);
+                margin-bottom: 30px;
+                padding-bottom: 15px;
+                border-bottom: 2px solid var(--cream);
+                text-align: center;
+                width: 100%;
+            }
+        }
+
+        @media(min-width: 601px) {
+            .sidebar-logo {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -1043,6 +1066,7 @@
     <header>
         <div class="logo">MadhuCakesNCafe</div>
         <nav id="nav-menu">
+            <div class="sidebar-logo">MadhuCakesNCafe</div>
             <a href="#home">Home</a>
             <a href="#menu">Menu</a>
             <a href="#specialties">Specialties</a>
@@ -1365,6 +1389,9 @@
                     current = section.getAttribute('id');
                 }
             });
+
+            // Default to 'home' if at the very top
+            if (window.pageYOffset < 100) current = 'home';
 
             navLinks.forEach(link => {
                 link.classList.remove('active');
